@@ -1,0 +1,26 @@
+services:
+  aas-env:
+    image: eclipsebasyx/aas-environment:2.0.0-milestone-17
+    container_name: aas-env
+    ports:
+      - "8081:8081"
+    environment:
+      BASYX_BACKEND: InMemory
+      BASYX_ENVIRONMENT: file:aas
+      BASYX_CORS_ALLOWED-ORIGINS: "*"
+      BASYX_CORS_ALLOWED-METHODS: GET,POST,PATCH,DELETE,PUT,OPTIONS,HEAD
+    volumes:
+      - ./changed-shell.aasx:/application/aas/changed-shell.aasx:ro
+      - ./new-shell.aasx:/application/aas/new-shell.aasx:ro
+
+  aas-web-ui:
+    image: eclipsebasyx/aas-gui:v2-261113
+    container_name: aas-web-ui
+    ports:
+      - "3000:3000"
+    environment:
+      AAS_REPO_PATH: http://localhost:8081/shells
+      SUBMODEL_REPO_PATH: http://localhost:8081/submodels
+      CD_REPO_PATH: http://localhost:8081/concept-descriptions
+    depends_on:
+      - aas-env
