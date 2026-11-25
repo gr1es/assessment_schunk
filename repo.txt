@@ -1,1 +1,1 @@
-git@github.com:gr1es/assessment_schunk.git
+https://github.com/gr1es/assessment_schunk.git
